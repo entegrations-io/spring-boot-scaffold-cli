@@ -1,0 +1,9 @@
+package open.source.tools.spring.example.repository;
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import open.source.tools.spring.example.model.User;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {
+
+}

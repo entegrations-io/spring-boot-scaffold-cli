@@ -1,0 +1,4 @@
+package:open.source.tools.spring.example
+user-database:root
+password-database:root
+springVersion:2.x

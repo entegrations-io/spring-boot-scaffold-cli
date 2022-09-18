@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="${template}">
+<head>
+ 	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+</head>
+<body>
+
+	<div layout:fragment="content">
+		<h3>List ${className}s</h3>
+		<hr />
+		<table class="table">
+			<thead>
+				<tr>
+					<td><a th:href="@{url_path/new}" class="btn btn-info" title="Create a new ${className} record.">New ${className}</a></td>
+					<td colspan="5"></td>
+					<td><input class="form-control me-2" id="searchCriteriaField" type="search" size="24" placeholder="Search ${className} records" aria-label="Search" title="Search the below ${className} records..."></td>
+				</tr>
+			</thead>
+		</table>
+		<br/><br/>
+		<div class="table-responsive-sm">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+	${th_attributes}
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="paramClassName : ${eachParam}" class="oneRow">
+	${td_attributes}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

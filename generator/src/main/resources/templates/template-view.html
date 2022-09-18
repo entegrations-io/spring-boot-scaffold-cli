@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="${template}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>View ${className}</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h3>View ${className}</h3>
+		<hr />
+${viewAttributes}
+		<a th:href="@{/path_url/{id}/edit(id = ${paramClassName.id})}" class="btn btn-primary">Edit this record</a> &nbsp;&nbsp;&nbsp;
+		<a href="#" data-action="delete" th:data-item-action-url="@{/path_url/{id}(id = ${paramClassName.id})}" th:data-item-success-url="@{/path_url}" data-confirm="Are you sure, to delete this record?" class="btn btn-danger">Delete this record</a> &nbsp;&nbsp;&nbsp;
+		<a th:href="@{/path_url}" class="btn btn-secondary">Back to list ${className}s</a> <br/>
+	</div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+package ${package};
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.hibernate.service.spi.ServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ${package_model}.${className};
+import ${package_service}.${className}Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Controller
+@RequestMapping("/${paramClassName}s")
+public class ${className}Controller {
+
+    private static final String MSG_SUCESS_INSERT = "${className} inserted successfully.";
+    private static final String MSG_SUCESS_UPDATE = "${className} successfully changed.";
+    private static final String MSG_SUCESS_DELETE = "Deleted ${className} successfully.";
+    private static final String MSG_ERROR = "Error.";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(${className}Controller.class);
+
+    @Autowired
+    private ${className}Service ${paramClassName}Service;
+
+    @GetMapping
+    public String index(final Model model) {
+        List<${className}> all = ${paramClassName}Service.findAll();
+        model.addAttribute("list${className}", all);
+        return "${paramClassName}/index";
+    }
+
+    @GetMapping("/{id}")
+    public String view(final Model model, final @PathVariable("id") Integer id) {
+        if (id != null) {
+            ${className} ${paramClassName} = ${paramClassName}Service.findById(id);
+            model.addAttribute("${paramClassName}", ${paramClassName});
+        }
+        return "${paramClassName}/view";
+    }
+
+    @GetMapping(value = "/new")
+    public String create(final Model model, final @ModelAttribute ${className} entity) {
+        model.addAttribute("${paramClassName}", entity);
+        return "${paramClassName}/form";
+    }
+
+    @PostMapping
+    public String create(final @Valid @ModelAttribute ${className} entity, final BindingResult result, final RedirectAttributes redirectAttributes) {
+        ${className} ${paramClassName} = null;
+        try {
+            ${paramClassName} = ${paramClassName}Service.save(entity);
+            redirectAttributes.addFlashAttribute("success", MSG_SUCESS_INSERT);
+            return "redirect:/${url_path}/" + ${paramClassName}.getId();
+        }
+        catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", MSG_ERROR);
+            LOGGER.error("Error creating for entity {}", entity, e);
+        }
+        return "redirect:/${url_path}/";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String update(final Model model, final @PathVariable("id") Integer id) {
+        try {
+            if (id != null) {
+                ${className} entity = ${paramClassName}Service.findById(id);
+                model.addAttribute("${paramClassName}", entity);
+            }
+        }
+        catch (Exception e) {
+            LOGGER.error("Error update for entity {} / {}", id, model, e);
+            throw new ServiceException(e.getMessage());
+        }
+        return "${paramClassName}/form";
+    }
+
+    @PutMapping
+    public String update(final @Valid @ModelAttribute ${className} entity, final BindingResult result, final RedirectAttributes redirectAttributes) {
+        ${className} ${paramClassName} = null;
+        try {
+            ${paramClassName} = ${paramClassName}Service.save(entity);
+            redirectAttributes.addFlashAttribute("success", MSG_SUCESS_UPDATE);
+            return "redirect:/${url_path}/" + ${paramClassName}.getId();
+        }
+        catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", MSG_ERROR);
+            LOGGER.error("Error update for entity {}", entity, e);
+        }
+        return "redirect:/${url_path}/";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(final @PathVariable("id") Integer id, final RedirectAttributes redirectAttributes) {
+        try {
+            if (id != null) {
+                ${className} entity = ${paramClassName}Service.findById(id);
+                ${paramClassName}Service.delete(entity);
+                redirectAttributes.addFlashAttribute("success", MSG_SUCESS_DELETE);
+            }
+        }
+        catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", MSG_ERROR);
+            LOGGER.error("Error deleting for entity {}", id, e);
+            throw new ServiceException(e.getMessage());
+        }
+        return "${paramClassName}/index";
+    }
+
+}
